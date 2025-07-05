@@ -775,6 +775,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   interactionDistance: 2
+  lockedMessage: The door is locked.
+  interactionPrompt: Open Door
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -834,6 +836,7 @@ GameObject:
   - component: {fileID: 1751327996}
   - component: {fileID: 1751327995}
   - component: {fileID: 1751327994}
+  - component: {fileID: 1751328005}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -911,7 +914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc0d5b9bb5c75546849802b58bf7c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 0.5
+  mouseSensitivity: 1
   minPitch: -90
   maxPitch: 90
   cameraTransform: {fileID: 431966634}
@@ -928,11 +931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d32a1f5da938724d934786bfe474e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 2
-  interactionLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  playerCamera: {fileID: 431966637}
 --- !u!114 &1751327999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,6 +1152,41 @@ Transform:
   - {fileID: 2092433522}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1751328005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751327993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9537bbe4e4e69c46a2eb59489095de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 2
+  interactionLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  interactionOrigin: {fileID: 1751328004}
+  OnInteractableFound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1751327993}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnNoInteractableFound:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2092433521
 GameObject:
   m_ObjectHideFlags: 0

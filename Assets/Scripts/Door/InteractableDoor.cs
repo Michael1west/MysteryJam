@@ -1,10 +1,12 @@
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class InteractableDoor : Door
+public class InteractableDoor : Door, IInteractable
 {
     [Header("Interaction Settings")]
     [SerializeField] private float interactionDistance = 2f;
+    [SerializeField] private string lockedMessage = "The door is locked.";
+    [SerializeField] private string interactionPrompt = "Open Door";
     [SerializeField] private LayerMask playerLayer;
     
     private Vector3 closedRotation;
@@ -104,5 +106,19 @@ public class InteractableDoor : Door
         float dotProduct = Vector3.Dot(playerTransform.forward, directionToDoor);
         
         return dotProduct > 0.5f; // Player is facing the door
+    }
+
+    public string InteractionPrompt => isLocked ? lockedMessage : interactionPrompt;
+    public bool IsInteractable => !isMoving;
+
+    public void OnInteract(Transform interactor)
+    {
+        if (isLocked)
+        {
+            Debug.Log(lockedMessage);
+            return;
+        }
+
+        Interact();
     }
 }

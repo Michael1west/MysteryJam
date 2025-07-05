@@ -9,13 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerLook look;
     private PlayerJump jump;
     private PlayerCrouch crouch;
-
-    [Header("Interaction")]
-    public float interactionRange = 2f;
-    public LayerMask interactionLayer;
-    public Camera playerCamera;
-
-    private InteractableDoor currentInteractable;
+    private PlayerInteraction interaction;
 
     private void Awake()
     {
@@ -24,17 +18,14 @@ public class PlayerInputHandler : MonoBehaviour
         look = GetComponent<PlayerLook>();
         jump = GetComponent<PlayerJump>();
         crouch = GetComponent<PlayerCrouch>();
+        interaction = GetComponentInChildren<PlayerInteraction>();
         
         // Verify all required components
         if (movement == null) Debug.LogError("PlayerMovement component missing!");
         if (look == null) Debug.LogError("PlayerLook component missing!");
         if (jump == null) Debug.LogError("PlayerJump component missing!");
         if (crouch == null) Debug.LogError("PlayerCrouch component missing!");
-    }
-
-    private void Update()
-    {
-        CheckForInteractables();
+        if (interaction == null) Debug.LogError("PlayerInteraction component missing in children!");
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -95,33 +86,11 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void CheckForInteractables()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward,
-        out hit, interactionRange, interactionLayer))
-        {
-            var door = hit.collider.GetComponent<InteractableDoor>();
-            if (door != null)
-            {
-                currentInteractable = door;
-            }
-
-            else{
-                currentInteractable = null;
-            }
-        }
-        else
-        {
-            currentInteractable = null;
-        }
-    }
-
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed && currentInteractable != null)
+        if (interaction != null && context.performed)
         {
-            currentInteractable.Interact();
+            interaction.HandleInteraction();
         }
     }
 }

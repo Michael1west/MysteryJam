@@ -34,10 +34,10 @@ public class PlayerLook : MonoBehaviour
     {
         if (lookInput.magnitude > 0.01f)
         {
-            // Remove deltaTime from sensitivity calculation
-            // The input system already handles frame-rate independence
-            float targetYaw = yaw + (lookInput.x * mouseSensitivity);
-            float targetPitch = Mathf.Clamp(pitch - (lookInput.y * mouseSensitivity), minPitch, maxPitch);
+            // Apply sensitivity with deltaTime for frame-rate independence
+            float deltaTime = Time.deltaTime;
+            float targetYaw = yaw + (lookInput.x * mouseSensitivity * deltaTime * 60f); // 60f to maintain similar sensitivity to before
+            float targetPitch = Mathf.Clamp(pitch - (lookInput.y * mouseSensitivity * deltaTime * 60f), minPitch, maxPitch);
         
             // Smooth the rotation
             yaw = Mathf.SmoothDamp(yaw, targetYaw, ref xVelocity, smoothTime);
