@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 135323234}
   - component: {fileID: 135323233}
   - component: {fileID: 135323232}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1071,8 +1071,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crouchSpeed: 2.5
-  crouchHeight: 0.5
-  standingHeight: 1
+  crouchHeight: 1
+  standingHeight: 2
+  cameraStandingY: 0.6
+  cameraCrouchingY: 0.3
   crouchSmoothTime: 0.1
   obstacleMask:
     serializedVersion: 2
@@ -1109,7 +1111,7 @@ MonoBehaviour:
   moveSpeed: 5
   sprintMultiplier: 1.5
   airControlMultiplier: 0.7
-  groundDistance: 0.4
+  groundDistance: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1246,7 +1248,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1751327998}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnCrouch
+        m_MethodName: OnSprint
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1310,7 +1312,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751327993}
   serializedVersion: 5
-  m_Mass: 70
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1494,7 +1496,7 @@ Transform:
   m_GameObject: {fileID: 2092433521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
