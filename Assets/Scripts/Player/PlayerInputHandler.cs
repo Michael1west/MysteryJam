@@ -10,6 +10,13 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerJump jump;
     private PlayerCrouch crouch;
 
+    [Header("Interaction")]
+    public float interactionRange = 2f;
+    public LayerMask interactionLayer;
+    public Camera playerCamera;
+
+    private InteractableDoor currentInteractable;
+
     private void Awake()
     {
         state = GetComponent<PlayerState>();
@@ -23,6 +30,11 @@ public class PlayerInputHandler : MonoBehaviour
         if (look == null) Debug.LogError("PlayerLook component missing!");
         if (jump == null) Debug.LogError("PlayerJump component missing!");
         if (crouch == null) Debug.LogError("PlayerCrouch component missing!");
+    }
+
+    private void Update()
+    {
+        CheckForInteractables();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -62,7 +74,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        state.SprintPressed = context.performed || context.canceled;
+        state.SprintPressed = context.performed;
         state.IsSprinting = state.SprintPressed && !state.IsCrouching;
     }
 
@@ -80,6 +92,36 @@ public class PlayerInputHandler : MonoBehaviour
             {
                 Debug.LogError("PlayerCrouch component is null!");
             }
+        }
+    }
+
+    private void CheckForInteractables()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward,
+        out hit, interactionRange, interactionLayer))
+        {
+            var door = hit.collider.GetComponent<InteractableDoor>();
+            if (door != null)
+            {
+                currentInteractable = door;
+            }
+
+            else{
+                currentInteractable = null;
+            }
+        }
+        else
+        {
+            currentInteractable = null;
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed && currentInteractable != null)
+        {
+            currentInteractable.Interact();
         }
     }
 }
