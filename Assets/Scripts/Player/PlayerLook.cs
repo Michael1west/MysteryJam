@@ -4,12 +4,17 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     [Header("Look Settings")]
-    public float mouseSensitivity = 0.2f;
+    public float mouseSensitivity = 2f;
     public float minPitch = -90f;
     public float maxPitch = 90f;
     public Transform cameraTransform;
+    [Tooltip("Smoothing time for camera movement (lower = more responsive)")]
+    public float smoothTime = 0.1f;
 
     private float pitch = 0f;
+    private float yaw = 0f;
+    private float xVelocity = 0f;
+    private float yVelocity = 0f;
     private PlayerState state;
 
     private void Awake()
@@ -17,21 +22,34 @@ public class PlayerLook : MonoBehaviour
         state = GetComponent<PlayerState>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        if (cameraTransform == null)
+        {
+            Debug.LogError("Camera Transform is not assigned in PlayerLook!");
+            cameraTransform = Camera.main?.transform;
+        }
     }
 
     public void UpdateLook(Vector2 lookInput)
     {
-        // Rotate player horizontally (yaw)
-        float yaw = lookInput.x * mouseSensitivity;
-        transform.Rotate(Vector3.up * yaw);
-
-        // Rotate camera vertically (pitch)
-        pitch -= lookInput.y * mouseSensitivity;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-        
-        if (cameraTransform != null)
+        if (lookInput.magnitude > 0.01f)
         {
-            cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+            // Remove deltaTime from sensitivity calculation
+            // The input system already handles frame-rate independence
+            float targetYaw = yaw + (lookInput.x * mouseSensitivity);
+            float targetPitch = Mathf.Clamp(pitch - (lookInput.y * mouseSensitivity), minPitch, maxPitch);
+        
+            // Smooth the rotation
+            yaw = Mathf.SmoothDamp(yaw, targetYaw, ref xVelocity, smoothTime);
+            pitch = Mathf.SmoothDamp(pitch, targetPitch, ref yVelocity, smoothTime);
+        
+            // Apply rotations
+            transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        
+            if (cameraTransform != null)
+            {
+                cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+            }
         }
     }
 
