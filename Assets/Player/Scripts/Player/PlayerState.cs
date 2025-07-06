@@ -14,6 +14,7 @@ public class PlayerState : MonoBehaviour
     public bool JumpPressed { get; set; }
     public bool CrouchPressed { get; set; }
     public bool SprintPressed { get; set; }  // Single source of truth for sprint state
+    public bool InteractPressed { get; set;}
 
     // Physics properties
     public Vector3 Velocity { get; set; }

@@ -1,4 +1,3 @@
-// PlayerInputHandler.cs
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerLook look;
     private PlayerJump jump;
     private PlayerCrouch crouch;
+    private InteractionManager interaction;
 
     private void Awake()
     {
@@ -18,6 +18,7 @@ public class PlayerInputHandler : MonoBehaviour
         look = GetComponent<PlayerLook>();
         jump = GetComponent<PlayerJump>();
         crouch = GetComponent<PlayerCrouch>();
+        interaction = GetComponent<InteractionManager>();
 
         if (state == null) Debug.LogError("PlayerState component is missing!");
     }
@@ -55,11 +56,8 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    //public void OnInteract(InputAction.CallbackContext context)
-    //{
-        //if (context.performed && interaction != null)
-        //{
-         //   interaction.OnInteractPerformed(context);
-        //}
-   // }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        state.InteractPressed = context.performed;
+    }
 }
