@@ -55,7 +55,7 @@ public class PlayerCrouch : MonoBehaviour
                 state.IsCrouching = false;
                 state.TargetHeight = standingHeight;
                 targetCenter = standingCenter;
-                state.IsSprinting = false;
+                state.SprintPressed = false;
             }
         }
         else
@@ -63,7 +63,7 @@ public class PlayerCrouch : MonoBehaviour
             state.IsCrouching = true;
             state.TargetHeight = crouchHeight;
             targetCenter = new Vector3(0, (crouchHeight - standingHeight) * 0.5f, 0);
-            state.IsSprinting = false;
+            state.SprintPressed = false;
         }
     }
 

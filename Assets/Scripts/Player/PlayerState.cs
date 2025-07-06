@@ -6,7 +6,6 @@ public class PlayerState : MonoBehaviour
     // Movement states
     public bool IsGrounded { get; set; }
     public bool IsCrouching { get; set; }
-    public bool IsSprinting { get; set; }
     public bool IsJumping { get; set; }
 
     // Input flags
@@ -14,7 +13,7 @@ public class PlayerState : MonoBehaviour
     public Vector2 LookInput { get; set; }
     public bool JumpPressed { get; set; }
     public bool CrouchPressed { get; set; }
-    public bool SprintPressed { get; set; }
+    public bool SprintPressed { get; set; }  // Single source of truth for sprint state
 
     // Physics properties
     public Vector3 Velocity { get; set; }
@@ -30,8 +29,8 @@ public class PlayerState : MonoBehaviour
         // Initialize default values
         IsGrounded = false;
         IsCrouching = false;
-        IsSprinting = false;
         IsJumping = false;
+        SprintPressed = false;
         MoveInput = Vector2.zero;
         LookInput = Vector2.zero;
         Velocity = Vector3.zero;

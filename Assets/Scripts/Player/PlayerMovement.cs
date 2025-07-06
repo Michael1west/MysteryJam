@@ -40,36 +40,36 @@ public class PlayerMovement : MonoBehaviour
         wasGrounded = state.IsGrounded;
     }
 
-    private void Move()
+    // In PlayerMovement.cs, update the Move() method:
+private void Move()
+{
+    if (state.MoveInput.magnitude > 0.1f)
     {
-        if (state.MoveInput.magnitude > 0.1f)
-        {
-            // Removed debug log
-        }
-
-        // Calculate direction
-        moveDirection = (transform.right * state.MoveInput.x + transform.forward * state.MoveInput.y).normalized;
-
-        // Apply movement speed with multipliers
-        float currentSpeed = state.IsSprinting ? moveSpeed * sprintMultiplier : moveSpeed;
-
-        // Apply air control if not grounded
-        if (!state.IsGrounded)
-        {
-            currentSpeed *= airControlMultiplier;
-            // Removed debug log
-        }
-
-        // Only modify horizontal velocity, preserve vertical velocity from physics
-        Vector3 horizontalVelocity = moveDirection * currentSpeed;
-        Vector3 currentVelocity = rb.linearVelocity;
-        
-        // Create new velocity with horizontal movement and preserved vertical movement
-        Vector3 targetVelocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
-        
-        // Apply the velocity
-        rb.linearVelocity = targetVelocity;
+        // Removed debug log
     }
+
+    // Calculate direction
+    moveDirection = (transform.right * state.MoveInput.x + transform.forward * state.MoveInput.y).normalized;
+
+    // Apply movement speed with multipliers
+    float currentSpeed = state.SprintPressed ? moveSpeed * sprintMultiplier : moveSpeed;
+    // Apply air control if not grounded
+    if (!state.IsGrounded)
+    {
+        currentSpeed *= airControlMultiplier;
+        // Removed debug log
+    }
+
+    // Only modify horizontal velocity, preserve vertical velocity from physics
+    Vector3 horizontalVelocity = moveDirection * currentSpeed;
+    Vector3 currentVelocity = rb.linearVelocity;
+    
+    // Create new velocity with horizontal movement and preserved vertical movement
+    Vector3 targetVelocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+    
+    // Apply the velocity
+    rb.linearVelocity = targetVelocity;
+}
 
     // Visualize ground check in the editor
     private void OnDrawGizmosSelected()
